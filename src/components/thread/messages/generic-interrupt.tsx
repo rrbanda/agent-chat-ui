@@ -93,7 +93,7 @@ export function GenericInterruptView({
 
   return (
     <div className="overflow-hidden rounded-lg border border-border enhanced-card">
-      <div className="border-b border-border bg-muted px-4 py-2">
+      <div className="border-b border-border bg-muted px-5 py-3.5">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h3 className="font-medium text-foreground">Human Interrupt</h3>
         </div>
@@ -104,7 +104,7 @@ export function GenericInterruptView({
         animate={{ height: "auto" }}
         transition={{ duration: 0.3 }}
       >
-        <div className="p-3">
+        <div className="px-5 py-4">
           <AnimatePresence
             mode="wait"
             initial={false}
@@ -128,10 +128,10 @@ export function GenericInterruptView({
                       : (item as [string, any]);
                     return (
                       <tr key={argIdx}>
-                        <td className="px-4 py-2 text-sm font-medium whitespace-nowrap text-foreground">
+                        <td className="px-5 py-3 text-sm font-medium whitespace-nowrap text-foreground">
                           {key}
                         </td>
-                        <td className="px-4 py-2 text-sm text-muted-foreground">
+                        <td className="px-5 py-3 text-sm text-muted-foreground">
                           {renderInterruptStateItem(value)}
                         </td>
                       </tr>

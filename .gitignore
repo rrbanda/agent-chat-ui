@@ -28,3 +28,7 @@ dist-ssr
 .env
 .next/
 next-env.d.ts
+
+# Kubernetes secrets (contains sensitive credentials)
+k8s/pull-secret.yaml
+**/pull-secret.yaml

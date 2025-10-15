@@ -1,16 +1,16 @@
 # Quay.io Public Registry Deployment Guide
 
-This guide covers building and pushing the Mortgage Agent UI to Quay.io for public distribution.
+This guide covers building and pushing the Tech Explorer UI to Quay.io for public distribution.
 
 ## Registry Information
 - **Registry**: `quay.io`
-- **Repository**: `rbrhssa/mortgage-agent-ui`
-- **Full Image Name**: `quay.io/rbrhssa/mortgage-agent-ui:latest`
+- **Repository**: `rbrhssa/tech-explorer-ui`
+- **Full Image Name**: `quay.io/rbrhssa/tech-explorer-ui:latest`
 
 ## Prerequisites
 
 1. **Quay.io Account**: Sign up at https://quay.io
-2. **Repository Setup**: Create the `mortgage-agent-ui` repository in your Quay.io account
+2. **Repository Setup**: Create the `tech-explorer-ui` repository in your Quay.io account
 3. **Podman/Docker**: Container tool installed
 4. **Authentication**: Login credentials for Quay.io
 
@@ -29,57 +29,57 @@ podman login quay.io
 
 ```bash
 # Build with Quay.io tag
-podman build -t quay.io/rbrhssa/mortgage-agent-ui:latest -f Containerfile .
+podman build -t quay.io/rbrhssa/tech-explorer-ui:latest -f Containerfile .
 
 # Build with version tag
-podman build -t quay.io/rbrhssa/mortgage-agent-ui:v1.0.0 -f Containerfile .
+podman build -t quay.io/rbrhssa/tech-explorer-ui:v1.0.0 -f Containerfile .
 
 # Build with both tags
-podman build -t quay.io/rbrhssa/mortgage-agent-ui:latest -t quay.io/rbrhssa/mortgage-agent-ui:v1.0.0 -f Containerfile .
+podman build -t quay.io/rbrhssa/tech-explorer-ui:latest -t quay.io/rbrhssa/tech-explorer-ui:v1.0.0 -f Containerfile .
 ```
 
 ## Step 3: Test Locally
 
 ```bash
 # Test the image locally first
-podman run -d --name test-mortgage-ui \
+podman run -d --name test-tech-explorer-ui \
   -p 8080:8080 \
   -e NODE_ENV=production \
   -e LANGGRAPH_API_URL=http://host.containers.internal:2024 \
-  quay.io/rbrhssa/mortgage-agent-ui:latest
+  quay.io/rbrhssa/tech-explorer-ui:latest
 
 # Test endpoints
 curl http://localhost:8080/api/health
 curl -I http://localhost:8080/
 
 # Clean up test
-podman stop test-mortgage-ui && podman rm test-mortgage-ui
+podman stop test-tech-explorer-ui && podman rm test-tech-explorer-ui
 ```
 
 ## Step 4: Push to Quay.io
 
 ```bash
 # Push latest tag
-podman push quay.io/rbrhssa/mortgage-agent-ui:latest
+podman push quay.io/rbrhssa/tech-explorer-ui:latest
 
 # Push version tag
-podman push quay.io/rbrhssa/mortgage-agent-ui:v1.0.0
+podman push quay.io/rbrhssa/tech-explorer-ui:v1.0.0
 
 # Or push all tags
-podman push --all-tags quay.io/rbrhssa/mortgage-agent-ui
+podman push --all-tags quay.io/rbrhssa/tech-explorer-ui
 ```
 
 ## Step 5: Verify Public Access
 
 ```bash
 # Pull the image from public registry (no login required for public images)
-podman pull quay.io/rbrhssa/mortgage-agent-ui:latest
+podman pull quay.io/rbrhssa/tech-explorer-ui:latest
 
 # Run the public image
-podman run -d --name mortgage-ui-public \
+podman run -d --name tech-explorer-ui-public \
   -p 8080:8080 \
   -e LANGGRAPH_API_URL=http://host.containers.internal:2024 \
-  quay.io/rbrhssa/mortgage-agent-ui:latest
+  quay.io/rbrhssa/tech-explorer-ui:latest
 ```
 
 ## Step 6: Update Kubernetes Deployments
@@ -89,8 +89,8 @@ The Kubernetes manifests are already updated to use the Quay.io image:
 ```yaml
 # k8s/deployment.yaml
 containers:
-- name: mortgage-assistant-ui
-  image: quay.io/rbrhssa/mortgage-agent-ui:latest
+- name: tech-explorer-ui
+  image: quay.io/rbrhssa/tech-explorer-ui:latest
 ```
 
 ## Automated Build & Push Using Makefile
@@ -110,7 +110,7 @@ make build push
 
 ### Make Repository Public
 
-1. Go to https://quay.io/repository/rbrhssa/mortgage-agent-ui
+1. Go to https://quay.io/repository/rbrhssa/tech-explorer-ui
 2. Click on "Settings" tab
 3. Change "Repository Visibility" to "Public"
 4. Save changes
@@ -125,15 +125,15 @@ make build push
 
 ```bash
 # Development builds
-podman build -t quay.io/rbrhssa/mortgage-agent-ui:dev-$(date +%Y%m%d) -f Containerfile .
+podman build -t quay.io/rbrhssa/tech-explorer-ui:dev-$(date +%Y%m%d) -f Containerfile .
 
 # Release builds
-podman build -t quay.io/rbrhssa/mortgage-agent-ui:v1.0.0 -f Containerfile .
-podman build -t quay.io/rbrhssa/mortgage-agent-ui:latest -f Containerfile .
+podman build -t quay.io/rbrhssa/tech-explorer-ui:v1.0.0 -f Containerfile .
+podman build -t quay.io/rbrhssa/tech-explorer-ui:latest -f Containerfile .
 
 # Push both version and latest
-podman push quay.io/rbrhssa/mortgage-agent-ui:v1.0.0
-podman push quay.io/rbrhssa/mortgage-agent-ui:latest
+podman push quay.io/rbrhssa/tech-explorer-ui:v1.0.0
+podman push quay.io/rbrhssa/tech-explorer-ui:latest
 ```
 
 ## OpenShift Deployment with Quay.io
@@ -143,11 +143,11 @@ podman push quay.io/rbrhssa/mortgage-agent-ui:latest
 oc apply -f k8s/deployment.yaml
 
 # Update image in existing deployment
-oc set image deployment/mortgage-assistant-ui \
-  mortgage-assistant-ui=quay.io/rbrhssa/mortgage-agent-ui:v1.1.0
+oc set image deployment/tech-explorer-ui \
+  tech-explorer-ui=quay.io/rbrhssa/tech-explorer-ui:v1.1.0
 
 # Check deployment status
-oc rollout status deployment/mortgage-assistant-ui
+oc rollout status deployment/tech-explorer-ui
 ```
 
 ## Security Considerations
@@ -164,7 +164,7 @@ oc rollout status deployment/mortgage-assistant-ui
 echo $QUAY_ROBOT_TOKEN | podman login quay.io --username $QUAY_ROBOT_USER --password-stdin
 
 # Push using robot account
-podman push quay.io/rbrhssa/mortgage-agent-ui:latest
+podman push quay.io/rbrhssa/tech-explorer-ui:latest
 ```
 
 ### Image Scanning
@@ -192,7 +192,7 @@ podman login quay.io
 
 ```bash
 # Check image exists locally
-podman images | grep mortgage-agent-ui
+podman images | grep tech-explorer-ui
 
 # Check repository permissions
 # - Verify repository exists in Quay.io
@@ -207,7 +207,7 @@ podman images | grep mortgage-agent-ui
 podman login quay.io
 
 # For public repositories, no login required
-podman pull quay.io/rbrhssa/mortgage-agent-ui:latest
+podman pull quay.io/rbrhssa/tech-explorer-ui:latest
 ```
 
 ## Image Information
@@ -223,7 +223,7 @@ podman pull quay.io/rbrhssa/mortgage-agent-ui:latest
 ```bash
 podman run -p 8080:8080 \
   -e LANGGRAPH_API_URL=http://host.containers.internal:2024 \
-  quay.io/rbrhssa/mortgage-agent-ui:latest
+  quay.io/rbrhssa/tech-explorer-ui:latest
 ```
 
 ### With Custom Configuration
@@ -232,15 +232,15 @@ podman run -p 8080:8080 \
   -e NODE_ENV=production \
   -e LANGGRAPH_API_URL=https://your-langgraph-api.com \
   -e API_BASE_URL=https://your-api.com \
-  quay.io/rbrhssa/mortgage-agent-ui:latest
+  quay.io/rbrhssa/tech-explorer-ui:latest
 ```
 
 ### Docker Compose Example
 ```yaml
 version: '3.8'
 services:
-  mortgage-ui:
-    image: quay.io/rbrhssa/mortgage-agent-ui:latest
+  tech-explorer-ui:
+    image: quay.io/rbrhssa/tech-explorer-ui:latest
     ports:
       - "8080:8080"
     environment:

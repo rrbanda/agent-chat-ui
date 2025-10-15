@@ -27,13 +27,35 @@ const useCopyToClipboard = ({
 } = {}) => {
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
-  const copyToClipboard = (value: string) => {
+  const copyToClipboard = async (value: string) => {
     if (!value) return;
 
-    navigator.clipboard.writeText(value).then(() => {
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), copiedDuration);
-    });
+    console.log('Code copy clicked, content length:', value?.length);
+    
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(value);
+        console.log('✓ Code copied to clipboard successfully');
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), copiedDuration);
+      } else {
+        // Fallback
+        const textArea = document.createElement('textarea');
+        textArea.value = value;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        console.log('✓ Code copied (fallback method)');
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), copiedDuration);
+      }
+    } catch (error) {
+      console.error('✗ Code copy failed:', error);
+      alert('Failed to copy code. Please try selecting and copying manually.');
+    }
   };
 
   return { isCopied, copyToClipboard };
@@ -53,8 +75,8 @@ const CodeHeader: FC<CodeHeaderProps> = ({ language, code }) => {
         tooltip="Copy"
         onClick={onCopy}
       >
-        {!isCopied && <CopyIcon />}
-        {isCopied && <CheckIcon />}
+        {!isCopied && <CopyIcon className="text-[#0066CC] hover:text-[#003D82]" />}
+        {isCopied && <CheckIcon className="text-[#0066CC]" />}
       </TooltipIconButton>
     </div>
   );
@@ -64,7 +86,7 @@ const defaultComponents: any = {
   h1: ({ className, ...props }: { className?: string }) => (
     <h1
       className={cn(
-        "mb-8 scroll-m-20 text-4xl font-extrabold tracking-tight last:mb-0",
+        "scroll-m-20 font-semibold tracking-tight first:mt-0 last:mb-0",
         className,
       )}
       {...props}
@@ -73,7 +95,7 @@ const defaultComponents: any = {
   h2: ({ className, ...props }: { className?: string }) => (
     <h2
       className={cn(
-        "mt-8 mb-4 scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0 last:mb-0",
+        "scroll-m-20 font-semibold tracking-tight first:mt-0 last:mb-0",
         className,
       )}
       {...props}
@@ -82,7 +104,7 @@ const defaultComponents: any = {
   h3: ({ className, ...props }: { className?: string }) => (
     <h3
       className={cn(
-        "mt-6 mb-4 scroll-m-20 text-2xl font-semibold tracking-tight first:mt-0 last:mb-0",
+        "scroll-m-20 font-semibold tracking-tight first:mt-0 last:mb-0",
         className,
       )}
       {...props}
@@ -91,7 +113,7 @@ const defaultComponents: any = {
   h4: ({ className, ...props }: { className?: string }) => (
     <h4
       className={cn(
-        "mt-6 mb-4 scroll-m-20 text-xl font-semibold tracking-tight first:mt-0 last:mb-0",
+        "scroll-m-20 font-semibold tracking-tight first:mt-0 last:mb-0",
         className,
       )}
       {...props}
@@ -100,7 +122,7 @@ const defaultComponents: any = {
   h5: ({ className, ...props }: { className?: string }) => (
     <h5
       className={cn(
-        "my-4 text-lg font-semibold first:mt-0 last:mb-0",
+        "font-semibold first:mt-0 last:mb-0",
         className,
       )}
       {...props}
@@ -108,20 +130,20 @@ const defaultComponents: any = {
   ),
   h6: ({ className, ...props }: { className?: string }) => (
     <h6
-      className={cn("my-4 font-semibold first:mt-0 last:mb-0", className)}
+      className={cn("font-semibold first:mt-0 last:mb-0", className)}
       {...props}
     />
   ),
   p: ({ className, ...props }: { className?: string }) => (
     <p
-      className={cn("mt-5 mb-5 leading-7 first:mt-0 last:mb-0", className)}
+      className={cn("leading-[1.7] first:mt-0 last:mb-0", className)}
       {...props}
     />
   ),
   a: ({ className, ...props }: { className?: string }) => (
     <a
       className={cn(
-        "text-primary font-medium underline underline-offset-4",
+        "text-primary font-medium underline underline-offset-4 transition-opacity hover:opacity-80",
         className,
       )}
       {...props}
@@ -129,32 +151,32 @@ const defaultComponents: any = {
   ),
   blockquote: ({ className, ...props }: { className?: string }) => (
     <blockquote
-      className={cn("border-l-2 pl-6 italic", className)}
+      className={cn("border-l-2 pl-4 italic first:mt-0 last:mb-0", className)}
       {...props}
     />
   ),
   ul: ({ className, ...props }: { className?: string }) => (
     <ul
-      className={cn("my-5 ml-6 list-disc [&>li]:mt-2", className)}
+      className={cn("ml-7 list-disc first:mt-0 last:mb-0 [&>li]:leading-[1.7]", className)}
       {...props}
     />
   ),
   ol: ({ className, ...props }: { className?: string }) => (
     <ol
-      className={cn("my-5 ml-6 list-decimal [&>li]:mt-2", className)}
+      className={cn("ml-7 list-decimal first:mt-0 last:mb-0 [&>li]:leading-[1.7]", className)}
       {...props}
     />
   ),
   hr: ({ className, ...props }: { className?: string }) => (
     <hr
-      className={cn("my-5 border-b", className)}
+      className={cn("border-b first:mt-0 last:mb-0", className)}
       {...props}
     />
   ),
   table: ({ className, ...props }: { className?: string }) => (
     <table
       className={cn(
-        "my-5 w-full border-separate border-spacing-0 overflow-y-auto",
+        "w-full border-separate border-spacing-0 overflow-y-auto first:mt-0 last:mb-0",
         className,
       )}
       {...props}
@@ -163,7 +185,7 @@ const defaultComponents: any = {
   th: ({ className, ...props }: { className?: string }) => (
     <th
       className={cn(
-        "bg-muted px-4 py-2 text-left font-bold first:rounded-tl-lg last:rounded-tr-lg [&[align=center]]:text-center [&[align=right]]:text-right",
+        "bg-muted px-3 py-2.5 text-left font-semibold text-sm first:rounded-tl-lg last:rounded-tr-lg [&[align=center]]:text-center [&[align=right]]:text-right",
         className,
       )}
       {...props}
@@ -172,7 +194,7 @@ const defaultComponents: any = {
   td: ({ className, ...props }: { className?: string }) => (
     <td
       className={cn(
-        "border-b border-l px-4 py-2 text-left last:border-r [&[align=center]]:text-center [&[align=right]]:text-right",
+        "border-b border-l px-3 py-2.5 text-left text-sm last:border-r [&[align=center]]:text-center [&[align=right]]:text-right",
         className,
       )}
       {...props}
@@ -196,7 +218,7 @@ const defaultComponents: any = {
   pre: ({ className, ...props }: { className?: string }) => (
     <pre
       className={cn(
-        "max-w-4xl overflow-x-auto rounded-lg bg-black text-white",
+        "max-w-4xl overflow-x-auto rounded-lg bg-black text-white first:mt-0 last:mb-0",
         className,
       )}
       {...props}
@@ -234,7 +256,7 @@ const defaultComponents: any = {
 
     return (
       <code
-        className={cn("rounded font-semibold", className)}
+        className={cn("rounded px-1.5 py-0.5 font-medium text-sm", className)}
         {...props}
       >
         {children}

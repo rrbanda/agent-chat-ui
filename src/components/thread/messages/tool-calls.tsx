@@ -25,7 +25,7 @@ export function ToolCalls({
             key={idx}
             className="overflow-hidden rounded-lg border border-border enhanced-card tool-call-card"
           >
-            <div className="border-b border-border bg-muted px-4 py-2 tool-call-header">
+            <div className="border-b border-border bg-muted px-5 py-3.5 tool-call-header">
               <h3 className="font-medium text-foreground">
                 {tc.name}
                 {tc.id && (
@@ -40,10 +40,10 @@ export function ToolCalls({
                 <tbody className="divide-y divide-gray-200">
                   {Object.entries(args).map(([key, value], argIdx) => (
                     <tr key={argIdx}>
-                      <td className="px-4 py-2 text-sm font-medium whitespace-nowrap text-foreground">
+                      <td className="px-5 py-3 text-sm font-medium whitespace-nowrap text-foreground">
                         {key}
                       </td>
-                      <td className="px-4 py-2 text-sm text-muted-foreground">
+                      <td className="px-5 py-3 text-sm text-muted-foreground">
                         {isComplexValue(value) ? (
                           <code className="rounded bg-muted px-2 py-1 font-mono text-sm break-all">
                             {JSON.stringify(value, null, 2)}
@@ -57,7 +57,7 @@ export function ToolCalls({
                 </tbody>
               </table>
             ) : (
-              <code className="block p-3 text-sm">{"{}"}</code>
+              <code className="block px-5 py-4 text-sm">{"{}"}</code>
             )}
           </div>
         );
@@ -97,7 +97,7 @@ export function ToolResult({ message }: { message: ToolMessage }) {
   return (
     <div className="mx-auto grid max-w-3xl grid-rows-[1fr_auto] gap-2">
       <div className="overflow-hidden rounded-lg border border-border enhanced-card tool-call-card">
-        <div className="border-b border-border bg-muted px-4 py-2 tool-call-header">
+        <div className="border-b border-border bg-muted px-5 py-3.5 tool-call-header">
           <div className="flex flex-wrap items-center justify-between gap-2">
             {message.name ? (
               <h3 className="font-medium text-foreground">
@@ -122,7 +122,7 @@ export function ToolResult({ message }: { message: ToolMessage }) {
           animate={{ height: "auto" }}
           transition={{ duration: 0.3 }}
         >
-          <div className="p-3">
+          <div className="px-5 py-4">
             <AnimatePresence
               mode="wait"
               initial={false}
@@ -148,10 +148,10 @@ export function ToolResult({ message }: { message: ToolMessage }) {
                           : [item[0], item[1]];
                         return (
                           <tr key={argIdx}>
-                            <td className="px-4 py-2 text-sm font-medium whitespace-nowrap text-foreground">
+                            <td className="px-5 py-3 text-sm font-medium whitespace-nowrap text-foreground">
                               {key}
                             </td>
-                            <td className="px-4 py-2 text-sm text-muted-foreground">
+                            <td className="px-5 py-3 text-sm text-muted-foreground">
                               {isComplexValue(value) ? (
                                 <code className="rounded bg-muted px-2 py-1 font-mono text-sm break-all">
                                   {JSON.stringify(value, null, 2)}

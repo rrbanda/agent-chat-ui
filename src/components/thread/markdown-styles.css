@@ -1,9 +1,10 @@
 /* Base markdown styles - Professional Banking/Mortgage Software */
 .markdown-content {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
   font-size: 15px;
-  line-height: 1.6;
+  line-height: 1.7;
   color: hsl(var(--foreground));
+  letter-spacing: 0.01em;
 }
 
 .markdown-content h1,
@@ -13,23 +14,49 @@
 .markdown-content h5,
 .markdown-content h6 {
   font-weight: 600;
-  margin: 1.5em 0 0.5em 0;
-  line-height: 1.3;
+  line-height: 1.4;
   color: hsl(var(--foreground));
+  letter-spacing: -0.01em;
+}
+
+.markdown-content h1 {
+  font-size: 1.75em;
+  margin: 1.2em 0 0.6em 0;
+}
+
+.markdown-content h2 {
+  font-size: 1.5em;
+  margin: 1.2em 0 0.6em 0;
+}
+
+.markdown-content h3 {
+  font-size: 1.25em;
+  margin: 1em 0 0.5em 0;
+}
+
+.markdown-content h4 {
+  font-size: 1.1em;
+  margin: 1em 0 0.5em 0;
+}
+
+.markdown-content h5,
+.markdown-content h6 {
+  font-size: 1em;
+  margin: 0.8em 0 0.4em 0;
 }
 
 .markdown-content h1:first-child,
 .markdown-content h2:first-child,
-.markdown-content h3:first-child {
+.markdown-content h3:first-child,
+.markdown-content h4:first-child,
+.markdown-content h5:first-child,
+.markdown-content h6:first-child {
   margin-top: 0;
 }
 
-.markdown-content h1 { font-size: 1.5em; }
-.markdown-content h2 { font-size: 1.3em; }
-.markdown-content h3 { font-size: 1.1em; }
-
 .markdown-content p {
-  margin: 0.8em 0;
+  margin: 0.75em 0;
+  line-height: 1.7;
 }
 
 .markdown-content p:first-child {
@@ -51,58 +78,114 @@
 
 .markdown-content ol,
 .markdown-content ul {
-  margin: 0.8em 0;
-  padding-left: 1.5em;
+  margin: 0.75em 0;
+  padding-left: 1.75em;
+  line-height: 1.7;
+}
+
+.markdown-content ol:first-child,
+.markdown-content ul:first-child {
+  margin-top: 0;
+}
+
+.markdown-content ol:last-child,
+.markdown-content ul:last-child {
+  margin-bottom: 0;
 }
 
 .markdown-content li {
+  margin: 0.4em 0;
+  line-height: 1.7;
+}
+
+.markdown-content li p {
   margin: 0.3em 0;
 }
 
 .markdown-content code:not(pre code) {
   background-color: hsl(var(--muted));
   color: hsl(var(--muted-foreground));
-  padding: 0.2em 0.4em;
-  border-radius: 3px;
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
   font-size: 0.9em;
-  font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+  font-family: 'SF Mono', 'Monaco', 'Consolas', 'Menlo', monospace;
+  font-weight: 500;
 }
 
 .markdown-content a {
   color: hsl(var(--primary));
   text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 .markdown-content a:hover {
   text-decoration: underline;
+  opacity: 0.8;
 }
 
 .markdown-content blockquote {
-  border-left: 4px solid hsl(var(--border));
+  border-left: 3px solid hsl(var(--border));
   padding-left: 1rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  margin: 0.75em 0;
   color: hsl(var(--muted-foreground));
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.markdown-content blockquote:first-child {
+  margin-top: 0;
+}
+
+.markdown-content blockquote:last-child {
+  margin-bottom: 0;
 }
 
 .markdown-content pre {
   overflow-x: auto;
+  margin: 0.75em 0;
+  line-height: 1.6;
+}
+
+.markdown-content pre:first-child {
+  margin-top: 0;
+}
+
+.markdown-content pre:last-child {
+  margin-bottom: 0;
 }
 
 .markdown-content table {
   border-collapse: collapse;
   width: 100%;
+  margin: 0.75em 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.markdown-content table:first-child {
+  margin-top: 0;
+}
+
+.markdown-content table:last-child {
+  margin-bottom: 0;
 }
 
 .markdown-content th,
 .markdown-content td {
   border: 1px solid hsl(var(--border));
-  padding: 8px;
+  padding: 10px 12px;
+  text-align: left;
 }
 
 .markdown-content th {
   background-color: hsl(var(--muted));
-  color: hsl(var(--muted-foreground));
+  color: hsl(var(--foreground));
+  font-weight: 600;
 }
 
 .markdown-content tr:nth-child(even) {
-  background-color: hsl(var(--muted) / 0.5);
+  background-color: hsl(var(--muted) / 0.3);
 }

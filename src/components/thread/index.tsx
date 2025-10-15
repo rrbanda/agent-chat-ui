@@ -22,6 +22,7 @@ import {
   SquarePen,
   XIcon,
   Plus,
+  RotateCcw,
 } from "lucide-react";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import { StickToBottom, useStickToBottomContext } from "use-stick-to-bottom";
@@ -30,7 +31,6 @@ import { toast } from "sonner";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
-import { GitHubSVG } from "../icons/github";
 import {
   Tooltip,
   TooltipContent,
@@ -46,6 +46,8 @@ import {
   useArtifactContext,
 } from "./artifact";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { TechExplorerWelcome } from "./tech-explorer-welcome";
+import { BlueBanner } from "./blue-banner";
 
 function StickyToBottomContent(props: {
   content: ReactNode;
@@ -88,29 +90,6 @@ function ScrollToBottom(props: { className?: string }) {
   );
 }
 
-function OpenGitHubRepo() {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <a
-            href="https://github.com/langchain-ai/agent-chat-ui"
-            target="_blank"
-            className="flex items-center justify-center"
-          >
-            <GitHubSVG
-              width="24"
-              height="24"
-            />
-          </a>
-        </TooltipTrigger>
-        <TooltipContent side="left">
-          <p>Open GitHub repo</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-}
 
 export function Thread() {
   const [artifactContext, setArtifactContext] = useArtifactContext();
@@ -123,9 +102,10 @@ export function Thread() {
   );
   const [hideToolCalls, setHideToolCalls] = useQueryState(
     "hideToolCalls",
-    parseAsBoolean.withDefault(false),
+    parseAsBoolean.withDefault(true),
   );
   const [input, setInput] = useState("");
+  const [showChatUI, setShowChatUI] = useState(false);
   const {
     contentBlocks,
     setContentBlocks,
@@ -151,6 +131,9 @@ export function Thread() {
     // close artifact and reset artifact context
     closeArtifact();
     setArtifactContext({});
+    
+    // Reset showChatUI when starting a new thread
+    setShowChatUI(false);
   };
 
   useEffect(() => {
@@ -215,6 +198,23 @@ export function Thread() {
     const context =
       Object.keys(artifactContext).length > 0 ? artifactContext : undefined;
 
+    // Debug logging for message counts
+    console.log(`[DEBUG] Current stream.messages count: ${stream.messages.length}`);
+    console.log(`[DEBUG] Tool messages to add: ${toolMessages.length}`);
+    console.log(`[DEBUG] Total messages being submitted: ${toolMessages.length + 1}`);
+    
+    // Estimate token count (rough estimate: ~100 tokens per message on average)
+    const estimatedTokens = stream.messages.length * 100;
+    if (estimatedTokens > 300000) {
+      console.warn(`[WARNING] High message count (${stream.messages.length} messages, ~${estimatedTokens} estimated tokens). Consider starting a new conversation to avoid context limit errors.`);
+      toast.error("Conversation history is very long", {
+        description: "You have a very long conversation history which may cause errors. Consider starting a new conversation.",
+        duration: 8000,
+        richColors: true,
+        closeButton: true,
+      });
+    }
+
     stream.submit(
       { messages: [...toolMessages, newHumanMessage], context },
       {
@@ -237,6 +237,44 @@ export function Thread() {
     setContentBlocks([]);
   };
 
+  const handleQuickStart = (prompt: string) => {
+    if (isLoading) return;
+    setFirstTokenReceived(false);
+
+    const newHumanMessage: Message = {
+      id: uuidv4(),
+      type: "human",
+      content: [{ type: "text", text: prompt }] as Message["content"],
+    };
+
+    const toolMessages = ensureToolCallsHaveResponses(stream.messages);
+    const context =
+      Object.keys(artifactContext).length > 0 ? artifactContext : undefined;
+
+    stream.submit(
+      { messages: [...toolMessages, newHumanMessage], context },
+      {
+        streamMode: ["values"],
+        streamSubgraphs: true,
+        streamResumable: true,
+        optimisticValues: (prev) => ({
+          ...prev,
+          context,
+          messages: [
+            ...(prev.messages ?? []),
+            ...toolMessages,
+            newHumanMessage,
+          ],
+        }),
+      },
+    );
+  };
+
+  const handleNewChat = () => {
+    // Show chat UI when user wants to start a new conversation
+    setShowChatUI(true);
+  };
+
   const handleRegenerate = (
     parentCheckpoint: Checkpoint | null | undefined,
   ) => {
@@ -251,37 +289,39 @@ export function Thread() {
     });
   };
 
-  const chatStarted = !!threadId || !!messages.length;
+  const chatStarted = !!threadId || !!messages.length || showChatUI;
   const hasNoAIOrToolMessages = !messages.find(
     (m) => m.type === "ai" || m.type === "tool",
   );
 
   return (
     <div className="flex h-screen w-full overflow-hidden">
-      <div className="relative hidden lg:flex">
-        <motion.div
-          className="absolute z-20 h-full overflow-hidden border-r bg-background"
-          style={{ width: 300 }}
-          animate={
-            isLargeScreen
-              ? { x: chatHistoryOpen ? 0 : -300 }
-              : { x: chatHistoryOpen ? 0 : -300 }
-          }
-          initial={{ x: -300 }}
-          transition={
-            isLargeScreen
-              ? { type: "spring", stiffness: 300, damping: 30 }
-              : { duration: 0 }
-          }
-        >
-          <div
-            className="relative h-full"
+      {chatStarted && (
+        <div className="relative hidden lg:flex">
+          <motion.div
+            className="absolute z-20 h-full overflow-hidden border-r bg-background"
             style={{ width: 300 }}
+            animate={
+              isLargeScreen
+                ? { x: chatHistoryOpen ? 0 : -300 }
+                : { x: chatHistoryOpen ? 0 : -300 }
+            }
+            initial={{ x: -300 }}
+            transition={
+              isLargeScreen
+                ? { type: "spring", stiffness: 300, damping: 30 }
+                : { duration: 0 }
+            }
           >
-            <ThreadHistory />
-          </div>
-        </motion.div>
-      </div>
+            <div
+              className="relative h-full"
+              style={{ width: 300 }}
+            >
+              <ThreadHistory />
+            </div>
+          </motion.div>
+        </div>
+      )}
 
       <div
         className={cn(
@@ -296,8 +336,8 @@ export function Thread() {
           )}
           layout={isLargeScreen}
           animate={{
-            marginLeft: chatHistoryOpen ? (isLargeScreen ? 300 : 0) : 0,
-            width: chatHistoryOpen
+            marginLeft: chatStarted && chatHistoryOpen ? (isLargeScreen ? 300 : 0) : 0,
+            width: chatStarted && chatHistoryOpen
               ? isLargeScreen
                 ? "calc(100% - 300px)"
                 : "100%"
@@ -310,26 +350,8 @@ export function Thread() {
           }
         >
           {!chatStarted && (
-            <div className="absolute top-0 left-0 z-10 flex w-full items-center justify-between gap-3 p-2 pl-4">
-              <div>
-                {(!chatHistoryOpen || !isLargeScreen) && (
-                  <Button
-                    className="hover:bg-accent enhanced-interactive"
-                    variant="ghost"
-                    onClick={() => setChatHistoryOpen((p) => !p)}
-                  >
-                    {chatHistoryOpen ? (
-                      <PanelRightOpen className="size-5" />
-                    ) : (
-                      <PanelRightClose className="size-5" />
-                    )}
-                  </Button>
-                )}
-              </div>
-              <div className="absolute top-2 right-4 flex items-center gap-2">
-                <ThemeToggle />
-                <OpenGitHubRepo />
-              </div>
+            <div className="absolute top-0 right-0 z-10 flex items-center gap-2 p-4">
+              <ThemeToggle />
             </div>
           )}
           {chatStarted && (
@@ -367,15 +389,23 @@ export function Thread() {
                     height={32}
                   />
                   <span className="text-xl font-semibold tracking-tight">
-                    Mortgage Assistant
+                    Tech Explorer
                   </span>
                 </motion.button>
               </div>
 
               <div className="flex items-center gap-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setThreadId(null)}
+                  className="flex items-center gap-2"
+                >
+                  <RotateCcw className="size-4" />
+                  Start Over
+                </Button>
                 <div className="flex items-center gap-2">
                   <ThemeToggle />
-                  <OpenGitHubRepo />
                 </div>
                 <TooltipIconButton
                   size="lg"
@@ -396,12 +426,13 @@ export function Thread() {
             <StickyToBottomContent
               className={cn(
                 "absolute inset-0 overflow-y-scroll px-4 enhanced-scrollbar [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-track]:bg-transparent",
-                !chatStarted && "mt-[25vh] flex flex-col items-stretch",
+                !chatStarted && "flex flex-col items-stretch",
                 chatStarted && "grid grid-rows-[1fr_auto]",
               )}
-              contentClassName="pt-8 pb-16  max-w-3xl mx-auto flex flex-col gap-4 w-full"
+              contentClassName="pt-8 pb-24 max-w-3xl mx-auto flex flex-col gap-2 w-full"
               content={
                 <>
+                  {!chatStarted && <TechExplorerWelcome onQuickStart={handleQuickStart} onNewChat={handleNewChat} />}
                   {messages
                     .filter((m) => !m.id?.startsWith(DO_NOT_RENDER_ID_PREFIX))
                     .map((message, index) =>
@@ -436,16 +467,8 @@ export function Thread() {
                 </>
               }
               footer={
+                !chatStarted ? null : (
                 <div className="sticky bottom-0 flex flex-col items-center gap-8 bg-background">
-                  {!chatStarted && (
-                    <div className="flex items-center gap-3 logo-container">
-                      <MortgageLogoSVG className="h-8 flex-shrink-0" />
-                      <h1 className="text-2xl font-semibold tracking-tight">
-                        Mortgage Assistant
-                      </h1>
-                    </div>
-                  )}
-
                   <ScrollToBottom className="animate-in fade-in-0 zoom-in-95 absolute bottom-full left-1/2 mb-4 -translate-x-1/2" />
 
                   <div
@@ -547,6 +570,7 @@ export function Thread() {
                     </form>
                   </div>
                 </div>
+                )
               }
             />
           </StickToBottom>

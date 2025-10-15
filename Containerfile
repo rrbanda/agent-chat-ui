@@ -41,6 +41,9 @@ RUN pnpm install --frozen-lockfile && \
 COPY --from=builder --chown=1001:0 /opt/app-root/src/.next ./.next
 COPY --from=builder --chown=1001:0 /opt/app-root/src/public ./public
 
+# Copy config directory
+COPY --chown=1001:0 config ./config
+
 # Create next.config.mjs with proper ownership
 COPY --chown=1001:0 next.config.mjs ./
 
@@ -59,10 +62,6 @@ ENV HOSTNAME="0.0.0.0"
 
 # Use the default user from the base image (UID 1001)
 USER 1001
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD node -e "const http = require('http'); const req = http.request('http://localhost:8080/api/health', res => process.exit(res.statusCode === 200 ? 0 : 1)); req.on('error', () => process.exit(1)); req.end();"
 
 # Start the application
 CMD ["pnpm", "start"]

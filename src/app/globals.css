@@ -5,6 +5,12 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Citi Brand Colors */
+  --citi-blue: #0066CC;
+  --citi-dark-blue: #003D82;
+  --citi-light-blue: #4D94E3;
+  --citi-lighter-blue: #7DB3E8;
+  
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -42,7 +48,7 @@
 
 .dark {
   /* Premium OLED Dark Mode Palette */
-  --background: oklch(0 0 0);                  /* OLED Black background */
+  --background: oklch(0.02 0.003 240);         /* Dark gradient base */
   --foreground: oklch(0.94 0.003 240);         /* Softer white text with subtle warmth */
   --card: oklch(0.06 0.005 240);               /* Subtle card surface */
   --card-foreground: oklch(0.92 0.003 240);    /* Refined card text */
@@ -123,9 +129,33 @@
   * {
     @apply border-border outline-ring/50;
   }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+  }
 
   body {
     @apply bg-background text-foreground;
+  }
+  
+  .dark body {
+    background: linear-gradient(135deg, 
+      oklch(0.03 0.005 245) 0%,
+      oklch(0.02 0.003 240) 30%,
+      oklch(0.025 0.004 235) 60%,
+      oklch(0.02 0.003 240) 100%);
+    background-attachment: fixed;
+  }
+  
+  .dark html {
+    background: linear-gradient(135deg, 
+      oklch(0.03 0.005 245) 0%,
+      oklch(0.02 0.003 240) 30%,
+      oklch(0.025 0.004 235) 60%,
+      oklch(0.02 0.003 240) 100%);
   }
 
   :root {
@@ -165,13 +195,13 @@
 
   /* Premium OLED Enhancements */
   .dark .enhanced-card {
-    border: 1px solid oklch(0.18 0.012 240);
-    background: linear-gradient(135deg, 
-      oklch(0.04 0.008 240) 0%, 
-      oklch(0.06 0.005 245) 100%);
-    box-shadow: 0 4px 12px rgb(0 0 0 / 0.3),
-                0 2px 4px rgb(0 0 0 / 0.2),
-                inset 0 1px 0 oklch(0.15 0.01 240);
+    border: 1px solid rgba(75, 85, 99, 0.4);
+    background: rgba(31, 41, 55, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      0 1px 4px rgba(0, 0, 0, 0.2);
   }
 
   .dark .enhanced-surface {
@@ -196,9 +226,10 @@
     transform: translateY(-1px);
   }
 
+  /* Premium Scrollbars - Dark Mode (Citi Blue) */
   .dark .enhanced-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: oklch(0.45 0.08 220) transparent;
+    scrollbar-color: rgba(0, 102, 204, 0.5) transparent;
   }
 
   .dark .enhanced-scrollbar::-webkit-scrollbar {
@@ -207,21 +238,24 @@
 
   .dark .enhanced-scrollbar::-webkit-scrollbar-track {
     background: transparent;
+    margin: 4px;
   }
 
   .dark .enhanced-scrollbar::-webkit-scrollbar-thumb {
-    background: oklch(0.45 0.08 220);
+    background: rgba(0, 102, 204, 0.5);
     border-radius: 3px;
+    transition: all 0.2s ease;
   }
 
   .dark .enhanced-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: oklch(0.55 0.1 220);
+    background: rgba(0, 102, 204, 0.7);
+    box-shadow: 0 2px 4px rgba(0, 102, 204, 0.3);
   }
 
-  /* Light theme scrollbars - elegant blue */
+  /* Premium Scrollbars - Light Mode (Citi Blue) */
   .enhanced-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: oklch(0.6 0.12 220) transparent;
+    scrollbar-color: rgba(0, 102, 204, 0.4) transparent;
   }
 
   .enhanced-scrollbar::-webkit-scrollbar {
@@ -230,15 +264,18 @@
 
   .enhanced-scrollbar::-webkit-scrollbar-track {
     background: transparent;
+    margin: 4px;
   }
 
   .enhanced-scrollbar::-webkit-scrollbar-thumb {
-    background: oklch(0.6 0.12 220);
+    background: rgba(0, 102, 204, 0.4);
     border-radius: 3px;
+    transition: all 0.2s ease;
   }
 
   .enhanced-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: oklch(0.5 0.15 220);
+    background: rgba(0, 102, 204, 0.6);
+    box-shadow: 0 2px 4px rgba(0, 102, 204, 0.15);
   }
 
   /* Elegant Button Styling for OLED */
@@ -419,33 +456,53 @@
 
   /* ChatGPT-Style Message Styling */
   
-  /* Message Group Styling - ChatGPT Style */
+  /* Message Group Styling - Consistent Spacing with Transitions */
   .dark .message-group {
     margin: 0;
-    padding: 20px 0;
+    padding: 16px 0;
     width: 100%;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
   }
 
   .dark .message-group.ai-group {
-    background: oklch(0.06 0.005 240);
+    background: linear-gradient(135deg, 
+      oklch(0.05 0.008 245) 0%, 
+      oklch(0.06 0.005 240) 50%,
+      oklch(0.055 0.006 235) 100%);
+  }
+
+  .dark .message-group.ai-group:hover {
+    background: linear-gradient(135deg, 
+      oklch(0.055 0.008 245) 0%, 
+      oklch(0.062 0.006 240) 50%,
+      oklch(0.058 0.007 235) 100%);
   }
 
   .dark .message-group.human-group {
     background: transparent;
   }
 
-  /* AI Message Content - ChatGPT Style */
-  .dark .ai-message-content {
-    color: oklch(0.9 0.005 240);
-    line-height: 1.7;
-    font-size: 15px;
+  .dark .message-group.human-group:hover {
+    background: rgba(31, 41, 55, 0.02);
   }
 
-  /* Human Message Content - ChatGPT Style */
+  /* AI Message Content - Consistent Typography */
+  .dark .ai-message-content {
+    color: oklch(0.92 0.005 240);
+    line-height: 1.7;
+    font-size: 15px;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+  }
+
+  /* Human Message Content - Consistent Typography */
   .dark .human-message-content {
-    color: oklch(0.9 0.005 240);
+    color: oklch(0.92 0.005 240);
     font-size: 15px;
     line-height: 1.7;
+    letter-spacing: 0.01em;
+    font-weight: 400;
   }
 
   /* Reset message-text overrides - let markdown-content handle styling */
@@ -474,58 +531,151 @@
       transparent 0%, 
       oklch(0.15 0.008 240) 50%, 
       transparent 100%);
-    margin: 24px 0;
+    margin: 16px 0;
+    opacity: 0.6;
   }
 
-  /* Enhanced Tool Call Styling */
-  .dark .enhanced-card.tool-call-card {
-    background: linear-gradient(135deg, 
-      oklch(0.03 0.005 240) 0%, 
-      oklch(0.05 0.003 245) 100%);
-    border: 1px solid oklch(0.2 0.012 240);
+  .light .message-separator {
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(0, 0, 0, 0.08) 50%, 
+      transparent 100%);
+    margin: 16px 0;
+    opacity: 0.6;
+  }
+
+  /* Tool Call Containers - Match message container styling */
+  .enhanced-card.tool-call-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(209, 213, 219, 0.5);
+    border-left: 3px solid rgba(139, 92, 246, 0.5);
     border-radius: 12px;
     margin: 8px 0;
-    box-shadow: 0 3px 12px rgb(0 0 0 / 0.2),
-                0 1px 3px rgb(0 0 0 / 0.1),
-                inset 0 1px 0 oklch(0.12 0.008 240);
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.06),
+      0 1px 4px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+  }
+
+  .enhanced-card.tool-call-card:hover {
+    border-left-color: rgba(139, 92, 246, 0.7);
+  }
+
+  .tool-call-header {
+    background: transparent;
+    border-bottom: 1px solid rgba(209, 213, 219, 0.3);
+  }
+
+  .tool-call-content {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* Tool call table styling */
+  .tool-call-card table {
+    background: transparent;
+  }
+
+  .tool-call-card .divide-gray-200 > * + * {
+    border-color: rgba(209, 213, 219, 0.3);
+  }
+
+  .tool-call-card td {
+    background: transparent;
+  }
+
+  /* Tool Call Containers - Dark Mode */
+  .dark .enhanced-card.tool-call-card {
+    background: rgba(31, 41, 55, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(75, 85, 99, 0.4);
+    border-left: 3px solid rgba(139, 92, 246, 0.6);
+    border-radius: 12px;
+    margin: 8px 0;
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      0 1px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+  }
+
+  .dark .enhanced-card.tool-call-card:hover {
+    border-left-color: rgba(139, 92, 246, 0.8);
   }
 
   .dark .tool-call-header {
-    background: linear-gradient(135deg, 
-      oklch(0.06 0.008 240) 0%, 
-      oklch(0.04 0.005 245) 100%);
-    border-bottom: 1px solid oklch(0.18 0.01 240);
-    padding: 12px 16px;
-    border-radius: 12px 12px 0 0;
+    background: transparent;
+    border-bottom: 1px solid rgba(75, 85, 99, 0.3);
   }
 
   .dark .tool-call-content {
-    padding: 16px;
     color: oklch(0.88 0.005 240);
     font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
     font-size: 13px;
     line-height: 1.5;
   }
 
-  /* Avatar Improvements - ChatGPT Style */
+  /* Tool call table styling - Dark Mode */
+  .dark .tool-call-card table {
+    background: transparent;
+  }
+
+  .dark .tool-call-card .divide-gray-200 > * + * {
+    border-color: rgba(75, 85, 99, 0.3);
+  }
+
+  .dark .tool-call-card td {
+    background: transparent;
+  }
+
+  /* Avatar Improvements - Premium Polish */
   .dark .message-avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 4px;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    box-shadow: 
+      0 4px 12px rgba(0, 0, 0, 0.4),
+      0 2px 6px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark .ai-avatar {
-    background: oklch(0.3 0.02 240);
-    color: oklch(0.9 0.005 240);
+    background: linear-gradient(135deg, 
+      rgba(0, 102, 204, 0.9) 0%, 
+      rgba(0, 61, 130, 0.95) 100%);
+    color: white;
+    border: 1px solid rgba(0, 102, 204, 0.6);
+  }
+
+  .dark .ai-avatar:hover {
+    box-shadow: 
+      0 3px 8px rgba(0, 102, 204, 0.3),
+      0 1px 4px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
   }
 
   .dark .human-avatar {
-    background: oklch(0.25 0.015 40);
-    color: oklch(0.95 0.002 240);
+    background: linear-gradient(135deg, 
+      rgba(75, 85, 99, 0.9) 0%, 
+      rgba(55, 65, 81, 0.95) 100%);
+    color: white;
+    border: 1px solid rgba(75, 85, 99, 0.6);
+  }
+
+  .dark .human-avatar:hover {
+    box-shadow: 
+      0 3px 8px rgba(0, 102, 204, 0.2),
+      0 1px 4px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
   }
 
   /* ChatGPT-Style Layout */
@@ -547,29 +697,42 @@
     opacity: 1;
   }
 
-  /* Style action buttons to be completely hidden until hover */
+  /* Premium Action Buttons - Dark Mode */
   .dark .message-actions button {
-    background: transparent;
-    border: none;
-    opacity: 0.7;
-    transition: opacity 0.2s ease;
+    background: oklch(0.08 0.005 240);
+    border: 1px solid oklch(0.15 0.008 240);
+    border-radius: 6px;
+    padding: 6px 10px;
+    opacity: 0.8;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   .dark .message-actions button:hover {
-    background: oklch(0.15 0.005 240);
+    background: oklch(0.12 0.008 240);
+    border-color: oklch(0.25 0.012 240);
     opacity: 1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
 
+  /* Premium Action Buttons - Light Mode */
   .light .message-actions button {
-    background: transparent;
-    border: none;
-    opacity: 0.7;
-    transition: opacity 0.2s ease;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 6px 10px;
+    opacity: 0.9;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   }
 
   .light .message-actions button:hover {
-    background: rgb(249, 249, 249);
+    background: rgba(255, 255, 255, 1);
+    border-color: rgba(0, 102, 204, 0.3);
     opacity: 1;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 102, 204, 0.15);
   }
 
   /* Ensure action buttons are never shown by default */
@@ -584,13 +747,13 @@
 
   /* Light mode enhanced styles */
   .light .enhanced-card {
-    border: 1px solid rgb(229, 231, 235);
-    background: linear-gradient(135deg, 
-      rgb(255, 255, 255) 0%, 
-      rgb(249, 250, 251) 100%);
-    box-shadow: 0 1px 3px rgb(0 0 0 / 0.1),
-                0 1px 2px rgb(0 0 0 / 0.06),
-                inset 0 1px 0 rgb(255, 255, 255);
+    border: 1px solid rgba(209, 213, 219, 0.5);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.06),
+      0 1px 4px rgba(0, 0, 0, 0.04);
   }
 
   .light .enhanced-surface {
@@ -605,36 +768,93 @@
     /* Remove conflicting styles */
   }
 
-  /* Light mode styles */
+  /* Light mode styles with Transitions */
   .light .message-group {
     margin: 0;
-    padding: 20px 0;
+    padding: 16px 0;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
   }
 
   .light .message-group.ai-group {
-    background: rgb(247, 247, 248);
+    background: linear-gradient(135deg, 
+      rgba(249, 250, 251, 0.8) 0%, 
+      rgba(243, 244, 246, 0.9) 100%);
+  }
+
+  .light .message-group.ai-group:hover {
+    background: linear-gradient(135deg, 
+      rgba(247, 248, 250, 0.9) 0%, 
+      rgba(243, 244, 246, 0.95) 100%);
   }
 
   .light .message-group.human-group {
     background: transparent;
   }
 
+  .light .message-group.human-group:hover {
+    background: rgba(249, 250, 251, 0.3);
+  }
+
   .light .ai-message-content {
-    color: rgb(13, 13, 13);
+    color: rgb(17, 24, 39);
+    line-height: 1.7;
+    font-size: 15px;
+    letter-spacing: 0.01em;
+    font-weight: 400;
   }
 
   .light .human-message-content {
-    color: rgb(13, 13, 13);
+    color: rgb(17, 24, 39);
+    line-height: 1.7;
+    font-size: 15px;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+  }
+
+  .light .message-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 
+      0 4px 12px rgba(0, 0, 0, 0.12),
+      0 2px 6px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .light .ai-avatar {
-    background: rgb(25, 195, 125);
+    background: linear-gradient(135deg, 
+      rgb(0, 102, 204) 0%, 
+      rgb(0, 61, 130) 100%);
     color: white;
+    border: 1px solid rgba(0, 102, 204, 0.3);
+  }
+
+  .light .ai-avatar:hover {
+    box-shadow: 
+      0 3px 8px rgba(0, 102, 204, 0.25),
+      0 1px 4px rgba(0, 0, 0, 0.1);
+    transform: scale(1.02);
   }
 
   .light .human-avatar {
-    background: rgb(171, 104, 255);
+    background: linear-gradient(135deg, 
+      rgb(107, 114, 128) 0%, 
+      rgb(75, 85, 99) 100%);
     color: white;
+    border: 1px solid rgba(107, 114, 128, 0.3);
+  }
+
+  .light .human-avatar:hover {
+    box-shadow: 
+      0 3px 8px rgba(0, 102, 204, 0.15),
+      0 1px 4px rgba(0, 0, 0, 0.1);
+    transform: scale(1.02);
   }
 
   .light .message-container {
@@ -683,72 +903,125 @@
     opacity: 1;
   }
 
-  /* ===== GLASSMORPHISM EFFECTS (Inspired by n8n.io) ===== */
+  /* ===== PROFESSIONAL GLASS EFFECTS (Citi Banking Style) ===== */
   
   /* Glass pane effects for message containers - Light Theme */
   .glass-message-container {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(209, 213, 219, 0.5);
     box-shadow: 
-      0 8px 32px rgba(0, 0, 0, 0.1),
-      0 4px 16px rgba(0, 0, 0, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    border-radius: 16px;
+      0 2px 8px rgba(0, 0, 0, 0.06),
+      0 1px 4px rgba(0, 0, 0, 0.04);
+    border-radius: 12px;
+    transition: all 0.2s ease;
   }
 
   .glass-message-container:hover {
-    background: rgba(255, 255, 255, 0.8);
-    border-color: rgba(59, 130, 246, 0.3);
+    background: rgba(255, 255, 255, 0.98);
+    border-color: rgba(0, 102, 204, 0.3);
     box-shadow: 
-      0 12px 40px rgba(0, 0, 0, 0.15),
-      0 6px 20px rgba(0, 0, 0, 0.08),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      0 4px 12px rgba(0, 0, 0, 0.08),
+      0 2px 6px rgba(0, 102, 204, 0.08);
   }
 
   /* Glass pane effects for message containers - Dark Theme */
   .dark .glass-message-container {
-    background: rgba(15, 15, 15, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(31, 41, 55, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(75, 85, 99, 0.4);
     box-shadow: 
-      0 8px 32px rgba(0, 0, 0, 0.4),
-      0 4px 16px rgba(0, 0, 0, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      0 1px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    transition: all 0.2s ease;
   }
 
   .dark .glass-message-container:hover {
-    background: rgba(20, 20, 20, 0.7);
-    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(31, 41, 55, 0.95);
+    border-color: rgba(0, 102, 204, 0.4);
     box-shadow: 
-      0 12px 40px rgba(0, 0, 0, 0.6),
-      0 6px 20px rgba(0, 0, 0, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      0 4px 12px rgba(0, 0, 0, 0.4),
+      0 2px 6px rgba(0, 102, 204, 0.15);
   }
 
-  /* Enhanced glass effect for AI messages */
+  /* Identical containers - NO visual differences */
   .glass-ai-message {
-    background: rgba(59, 130, 246, 0.08);
-    border-color: rgba(59, 130, 246, 0.2);
+    /* All styling inherited from .glass-message-container */
+  }
+
+  .glass-ai-message:hover {
+    /* Same hover as base */
   }
 
   .dark .glass-ai-message {
-    background: rgba(59, 130, 246, 0.12);
-    border-color: rgba(59, 130, 246, 0.3);
+    /* All styling inherited from .dark .glass-message-container */
   }
 
-  /* Enhanced glass effect for human messages */
+  .dark .glass-ai-message:hover {
+    /* Same hover as base */
+  }
+
+  /* Identical containers - NO visual differences */
   .glass-human-message {
-    background: rgba(34, 197, 94, 0.08);
-    border-color: rgba(34, 197, 94, 0.2);
+    /* All styling inherited from .glass-message-container */
+  }
+
+  .glass-human-message:hover {
+    /* Same hover as base */
   }
 
   .dark .glass-human-message {
-    background: rgba(34, 197, 94, 0.12);
-    border-color: rgba(34, 197, 94, 0.3);
+    /* All styling inherited from .dark .glass-message-container */
+  }
+
+  .dark .glass-human-message:hover {
+    /* Same hover as base */
+  }
+
+  /* Force all message content to be identical */
+  .glass-message-container {
+    min-height: 0 !important;
+  }
+
+  .message-text {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+  }
+
+  /* Markdown wrapper - make it invisible to layout */
+  .message-text .markdown-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block;
+  }
+
+  /* Remove all paragraph spacing in message containers */
+  .glass-message-container .markdown-content > * {
+    margin: 0 !important;
+  }
+
+  .glass-message-container .markdown-content p {
+    margin: 0 !important;
+  }
+
+  /* Human message content - ensure identical styling */
+  .glass-message-container .human-message-content {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+  }
+
+  /* AI message content - ensure identical styling */
+  .glass-message-container .ai-message-content {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
   }
 
   /* Professional Loading Animations */
@@ -778,6 +1051,46 @@
     }
   }
 
+  /* Professional Message Entrance Animation */
+  @keyframes messageSlideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes messageFadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Smooth Avatar Entrance */
+  @keyframes avatarFadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Apply entrance animations */
+  .glass-message-container {
+    animation: messageSlideIn 0.3s ease;
+  }
+
+  .message-avatar {
+    animation: avatarFadeIn 0.3s ease;
+  }
+
   /* Banking-style loading dots */
   .loading-dots {
     display: inline-flex;
@@ -798,5 +1111,173 @@
 
   .loading-dots div:nth-child(3) {
     animation-delay: 0.8s;
+  }
+
+  /* ===== CITI TECH EXPLORER STYLES ===== */
+  
+  /* Citi Brand Button Styles */
+  .citi-btn-primary {
+    background: linear-gradient(135deg, var(--citi-blue) 0%, var(--citi-dark-blue) 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25),
+                0 2px 4px rgba(0, 102, 204, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .citi-btn-primary:hover {
+    background: linear-gradient(135deg, var(--citi-dark-blue) 0%, var(--citi-blue) 100%);
+    box-shadow: 0 6px 16px rgba(0, 102, 204, 0.35),
+                0 4px 8px rgba(0, 102, 204, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .citi-btn-secondary {
+    background: linear-gradient(135deg, var(--citi-light-blue) 0%, var(--citi-blue) 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25),
+                0 2px 4px rgba(0, 102, 204, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .citi-btn-secondary:hover {
+    background: linear-gradient(135deg, var(--citi-blue) 0%, var(--citi-dark-blue) 100%);
+    box-shadow: 0 6px 16px rgba(0, 102, 204, 0.35),
+                0 4px 8px rgba(0, 102, 204, 0.25);
+    transform: translateY(-2px);
+  }
+
+  /* Citi Card Styles */
+  .citi-card {
+    background: white;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08),
+                0 1px 4px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .citi-card:hover {
+    border-color: var(--citi-blue);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.15),
+                0 4px 12px rgba(0, 102, 204, 0.1);
+    transform: translateY(-4px);
+  }
+
+  .dark .citi-card {
+    background: linear-gradient(135deg, 
+      oklch(0.04 0.008 240) 0%, 
+      oklch(0.06 0.005 245) 100%);
+    border: 2px solid oklch(0.18 0.012 240);
+    box-shadow: 0 4px 16px rgb(0 0 0 / 0.3),
+                0 2px 8px rgb(0 0 0 / 0.2);
+  }
+
+  .dark .citi-card:hover {
+    border-color: var(--citi-light-blue);
+    box-shadow: 0 8px 32px rgba(77, 148, 227, 0.2),
+                0 4px 16px rgba(77, 148, 227, 0.15);
+  }
+
+  /* Citi Progress Indicator */
+  .citi-progress-step {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .citi-progress-step.active {
+    background: var(--citi-blue);
+    border-color: var(--citi-blue);
+    box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.2);
+  }
+
+  .citi-progress-step.completed {
+    background: #22C55E;
+    border-color: #22C55E;
+  }
+
+  /* Citi Hero Title Animation */
+  @keyframes citi-fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .citi-hero-title {
+    animation: citi-fade-in-up 0.8s ease-out;
+  }
+
+  /* Citi Gradient Background */
+  .citi-gradient-bg {
+    background: linear-gradient(135deg, 
+      rgba(0, 102, 204, 0.05) 0%,
+      rgba(77, 148, 227, 0.05) 100%);
+  }
+
+  .dark .citi-gradient-bg {
+    background: linear-gradient(135deg, 
+      rgba(0, 102, 204, 0.15) 0%,
+      rgba(77, 148, 227, 0.15) 100%);
+  }
+
+  /* Citi Section Divider */
+  .citi-divider {
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent 0%,
+      var(--citi-blue) 50%,
+      transparent 100%);
+  }
+
+  /* Citi Badge */
+  .citi-badge {
+    background: linear-gradient(135deg, var(--citi-blue) 0%, var(--citi-light-blue) 100%);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Citi Text Styles */
+  .citi-text-primary {
+    color: var(--citi-blue);
+  }
+
+  .citi-text-accent {
+    color: var(--citi-dark-blue);
+  }
+
+  /* Smooth Transitions */
+  .citi-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Corporate Shadow */
+  .citi-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .citi-shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .dark .citi-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+                0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  }
+
+  .dark .citi-shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4),
+                0 4px 6px -2px rgba(0, 0, 0, 0.3);
   }
 }

@@ -106,7 +106,7 @@ export function AssistantMessage({
   const contentString = getContentString(content);
   const [hideToolCalls] = useQueryState(
     "hideToolCalls",
-    parseAsBoolean.withDefault(false),
+    parseAsBoolean.withDefault(true),
   );
 
   const thread = useStreamContext();
@@ -155,22 +155,22 @@ export function AssistantMessage({
         ) : (
           <>
             {contentString.length > 0 && (
-              <div className="py-1">
-                <div className="flex items-start gap-3">
-                  {/* Professional Mortgage Advisor Avatar */}
+              <div className="py-2">
+                <div className="flex items-start gap-3.5">
+                  {/* Professional TechX Assistant Avatar */}
                   <div className="flex-shrink-0 mt-1">
-                    <div className="w-8 h-8 ai-avatar rounded-lg flex items-center justify-center shadow-sm">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <div className="w-9 h-9 ai-avatar rounded-lg flex items-center justify-center shadow-sm">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                         <path d="M3 21h18M5 21V7l8-4v18M19 21V10l-6-3M9 9h1m-1 4h1m-1 4h1m5-8h1m-1 4h1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </div>
                   </div>
                   <div className="flex-1 min-w-0 max-w-none">
-                    <div className="mb-1">
-                      <span className="text-sm font-medium text-primary">Mortgage Advisor</span>
+                    <div className="mb-1.5">
+                      <span className="text-sm font-semibold text-primary">TechX Assistant</span>
                     </div>
-                    <div className="glass-message-container glass-ai-message px-4 py-3 text-left max-w-full">
-                      <div className={`break-words overflow-wrap-anywhere word-break-break-word message-text ai-message-content enhanced-scrollbar message-content-smart ${contentString.length < 500 ? 'short-content' : contentString.length < 1500 ? 'medium-content' : 'long-content'}`}>
+                    <div className="glass-message-container glass-ai-message px-5 py-4 text-left max-w-full">
+                      <div className={`break-words overflow-wrap-anywhere word-break-break-word message-text ai-message-content enhanced-scrollbar message-content-smart ${contentString.length < 500 ? 'short-content' : contentString.length < 1500 ? 'medium-content' : 'long-content'}`} style={{margin: 0, padding: 0}}>
                         <MarkdownText>{contentString}</MarkdownText>
                       </div>
                     </div>
@@ -234,23 +234,25 @@ export function AssistantMessageLoading() {
   return (
     <div className="mr-auto flex items-start gap-2">
       <div className="flex flex-col gap-2 max-w-2xl md:max-w-4xl lg:max-w-6xl xl:max-w-7xl">
-        <div className="flex items-start gap-3">
-          {/* Professional Mortgage Advisor Avatar */}
-          <div className="flex-shrink-0 mt-1">
-            <div className="w-8 h-8 ai-avatar rounded-lg flex items-center justify-center shadow-sm">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M3 21h18M5 21V7l8-4v18M19 21V10l-6-3M9 9h1m-1 4h1m-1 4h1m5-8h1m-1 4h1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+        <div className="py-2">
+          <div className="flex items-start gap-3.5">
+            {/* Professional TechX Assistant Avatar */}
+            <div className="flex-shrink-0 mt-1">
+              <div className="w-9 h-9 ai-avatar rounded-lg flex items-center justify-center shadow-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 21h18M5 21V7l8-4v18M19 21V10l-6-3M9 9h1m-1 4h1m-1 4h1m5-8h1m-1 4h1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
             </div>
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="mb-1">
-              <span className="text-sm font-medium text-primary">Mortgage Advisor</span>
-            </div>
-            <div className="bg-muted flex h-8 items-center gap-1 rounded-2xl px-4 py-2">
-              <div className="bg-foreground/50 h-1.5 w-1.5 animate-[pulse_1.5s_ease-in-out_infinite] rounded-full"></div>
-              <div className="bg-foreground/50 h-1.5 w-1.5 animate-[pulse_1.5s_ease-in-out_0.5s_infinite] rounded-full"></div>
-              <div className="bg-foreground/50 h-1.5 w-1.5 animate-[pulse_1.5s_ease-in-out_1s_infinite] rounded-full"></div>
+            <div className="flex-1 min-w-0">
+              <div className="mb-1.5">
+                <span className="text-sm font-semibold text-primary">TechX Assistant</span>
+              </div>
+              <div className="bg-muted flex h-10 items-center gap-1.5 rounded-2xl px-5 py-4">
+                <div className="bg-foreground/50 h-2 w-2 animate-[pulse_1.5s_ease-in-out_infinite] rounded-full"></div>
+                <div className="bg-foreground/50 h-2 w-2 animate-[pulse_1.5s_ease-in-out_0.5s_infinite] rounded-full"></div>
+                <div className="bg-foreground/50 h-2 w-2 animate-[pulse_1.5s_ease-in-out_1s_infinite] rounded-full"></div>
+              </div>
             </div>
           </div>
         </div>

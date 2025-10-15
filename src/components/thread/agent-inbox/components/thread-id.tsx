@@ -65,7 +65,7 @@ export function ThreadIdCopyable({
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.15 }}
           >
-            <CopyCheck className="h-3 max-h-3 w-3 max-w-3 text-green-500" />
+            <CopyCheck className="h-3 max-h-3 w-3 max-w-3 text-[#0066CC]" />
           </motion.div>
         ) : (
           <motion.div
@@ -75,7 +75,7 @@ export function ThreadIdCopyable({
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.15 }}
           >
-            <Copy className="h-3 max-h-3 w-3 max-w-3 text-gray-500" />
+            <Copy className="h-3 max-h-3 w-3 max-w-3 text-[#0066CC] hover:text-[#003D82]" />
           </motion.div>
         )}
       </AnimatePresence>

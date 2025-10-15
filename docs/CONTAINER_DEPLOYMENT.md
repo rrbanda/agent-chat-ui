@@ -1,6 +1,6 @@
 # Container Deployment Guide
 
-This guide provides step-by-step instructions for containerizing and deploying the Mortgage Assistant UI application using Podman and OpenShift.
+This guide provides step-by-step instructions for containerizing and deploying the Tech Explorer UI application using Podman and OpenShift.
 
 ## Prerequisites
 
@@ -22,10 +22,10 @@ This guide provides step-by-step instructions for containerizing and deploying t
 
 ```bash
 # Build the container image
-podman build -t quay.io/rbrhssa/mortgage-agent-ui:latest -f Containerfile .
+podman build -t quay.io/rbrhssa/tech-explorer-ui:latest -f Containerfile .
 
 # Alternative with specific tag
-podman build -t quay.io/rbrhssa/mortgage-agent-ui:v1.0.0 -f Containerfile .
+podman build -t quay.io/rbrhssa/tech-explorer-ui:v1.0.0 -f Containerfile .
 ```
 
 ### Run Container Locally
@@ -33,19 +33,19 @@ podman build -t quay.io/rbrhssa/mortgage-agent-ui:v1.0.0 -f Containerfile .
 ```bash
 # Run with basic configuration
 podman run -d \
-  --name mortgage-assistant-ui \
+  --name tech-explorer-ui \
   -p 8080:8080 \
   -e NODE_ENV=production \
   -e LANGGRAPH_API_URL=http://host.containers.internal:2024 \
-  quay.io/rbrhssa/mortgage-agent-ui:latest
+  quay.io/rbrhssa/tech-explorer-ui:latest
 
 # Run with volume mounts for development
 podman run -d \
-  --name mortgage-assistant-ui-dev \
+  --name tech-explorer-ui-dev \
   -p 8080:8080 \
   -e NODE_ENV=production \
   -v ./config:/opt/app-root/src/config:Z \
-  mortgage-assistant-ui:latest
+  tech-explorer-ui:latest
 ```
 
 ### Container Management
@@ -55,16 +55,16 @@ podman run -d \
 podman ps
 
 # View logs
-podman logs mortgage-assistant-ui
+podman logs tech-explorer-ui
 
 # Stop container
-podman stop mortgage-assistant-ui
+podman stop tech-explorer-ui
 
 # Remove container
-podman rm mortgage-assistant-ui
+podman rm tech-explorer-ui
 
 # Remove image
-podman rmi mortgage-assistant-ui:latest
+podman rmi tech-explorer-ui:latest
 ```
 
 ## Step 2: Push to Registry
@@ -73,13 +73,13 @@ podman rmi mortgage-assistant-ui:latest
 
 ```bash
 # Tag for your registry
-podman tag mortgage-assistant-ui:latest your-registry.com/mortgage-assistant-ui:latest
+podman tag tech-explorer-ui:latest your-registry.com/tech-explorer-ui:latest
 
 # Push to registry
-podman push your-registry.com/mortgage-assistant-ui:latest
+podman push your-registry.com/tech-explorer-ui:latest
 
 # For OpenShift internal registry
-podman tag mortgage-assistant-ui:latest image-registry.openshift-image-registry.svc:5000/your-namespace/mortgage-assistant-ui:latest
+podman tag tech-explorer-ui:latest image-registry.openshift-image-registry.svc:5000/your-namespace/tech-explorer-ui:latest
 ```
 
 ## Step 3: Deploy to OpenShift
@@ -91,9 +91,9 @@ podman tag mortgage-assistant-ui:latest image-registry.openshift-image-registry.
 oc login https://your-openshift-cluster.com
 
 # Create or switch to your project/namespace
-oc new-project mortgage-assistant-ui
+oc new-project tech-explorer-ui
 # or
-oc project mortgage-assistant-ui
+oc project tech-explorer-ui
 ```
 
 ### Configure Application Settings
@@ -137,16 +137,16 @@ oc get routes
 
 ```bash
 # Check pod status
-oc get pods -l app=mortgage-assistant-ui
+oc get pods -l app=tech-explorer-ui
 
 # View pod logs
-oc logs -l app=mortgage-assistant-ui
+oc logs -l app=tech-explorer-ui
 
 # Get route URL
-oc get route mortgage-assistant-ui-route -o jsonpath='{.spec.host}'
+oc get route tech-explorer-ui-route -o jsonpath='{.spec.host}'
 
 # Test the application
-curl https://$(oc get route mortgage-assistant-ui-route -o jsonpath='{.spec.host}')
+curl https://$(oc get route tech-explorer-ui-route -o jsonpath='{.spec.host}')
 ```
 
 ## Environment Variables Configuration
@@ -177,7 +177,7 @@ oc patch configmap app-config -p '{"data":{"langgraph-api-url":"https://new-api.
 
 ```bash
 # Set environment variables in deployment
-oc set env deployment/mortgage-assistant-ui LANGGRAPH_API_URL=https://your-api.example.com
+oc set env deployment/tech-explorer-ui LANGGRAPH_API_URL=https://your-api.example.com
 ```
 
 ## Scaling and Management
@@ -186,23 +186,23 @@ oc set env deployment/mortgage-assistant-ui LANGGRAPH_API_URL=https://your-api.e
 
 ```bash
 # Scale to 3 replicas
-oc scale deployment/mortgage-assistant-ui --replicas=3
+oc scale deployment/tech-explorer-ui --replicas=3
 
 # Check scaling status
-oc get deployment mortgage-assistant-ui
+oc get deployment tech-explorer-ui
 ```
 
 ### Update the Application
 
 ```bash
 # Update image
-oc set image deployment/mortgage-assistant-ui mortgage-assistant-ui=your-registry.com/mortgage-assistant-ui:v1.1.0
+oc set image deployment/tech-explorer-ui tech-explorer-ui=your-registry.com/tech-explorer-ui:v1.1.0
 
 # Check rollout status
-oc rollout status deployment/mortgage-assistant-ui
+oc rollout status deployment/tech-explorer-ui
 
 # Rollback if needed
-oc rollout undo deployment/mortgage-assistant-ui
+oc rollout undo deployment/tech-explorer-ui
 ```
 
 ## Security Considerations
@@ -224,11 +224,11 @@ oc apply -f - <<EOF
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: mortgage-assistant-ui-netpol
+  name: tech-explorer-ui-netpol
 spec:
   podSelector:
     matchLabels:
-      app: mortgage-assistant-ui
+      app: tech-explorer-ui
   policyTypes:
   - Ingress
   - Egress
@@ -263,26 +263,26 @@ EOF
 
 ```bash
 # Get detailed pod information
-oc describe pod -l app=mortgage-assistant-ui
+oc describe pod -l app=tech-explorer-ui
 
 # Get events
 oc get events --sort-by=.metadata.creationTimestamp
 
 # Access pod shell for debugging
-oc rsh deployment/mortgage-assistant-ui
+oc rsh deployment/tech-explorer-ui
 
 # Port forward for testing
-oc port-forward deployment/mortgage-assistant-ui 8080:8080
+oc port-forward deployment/tech-explorer-ui 8080:8080
 ```
 
 ### Monitoring and Observability
 
 ```bash
 # View resource usage
-oc top pods -l app=mortgage-assistant-ui
+oc top pods -l app=tech-explorer-ui
 
 # Check liveness/readiness probes
-oc describe pod -l app=mortgage-assistant-ui | grep -A 10 "Liveness\|Readiness"
+oc describe pod -l app=tech-explorer-ui | grep -A 10 "Liveness\|Readiness"
 ```
 
 ## Performance Tuning
@@ -305,7 +305,7 @@ resources:
 
 ```bash
 # Create HPA
-oc autoscale deployment mortgage-assistant-ui --cpu-percent=70 --min=2 --max=10
+oc autoscale deployment tech-explorer-ui --cpu-percent=70 --min=2 --max=10
 
 # Check HPA status
 oc get hpa
@@ -321,5 +321,5 @@ oc delete -f k8s/
 oc delete configmap app-config
 
 # Delete project (if desired)
-oc delete project mortgage-assistant-ui
+oc delete project tech-explorer-ui
 ```

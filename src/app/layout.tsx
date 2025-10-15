@@ -12,8 +12,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Mortgage Assistant",
-  description: "Professional mortgage guidance and support",
+  title: "Tech Explorer",
+  description: "Technology Catalog & Discovery Tool",
 };
 
 export default function RootLayout({

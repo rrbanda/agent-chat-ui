@@ -1,6 +1,6 @@
-# Mortgage Assistant UI
+# Tech Explorer UI
 
-The Mortgage Assistant UI is a specialized Next.js application designed to provide intelligent mortgage guidance and loan processing assistance. Built on LangGraph infrastructure, it enables seamless conversations with mortgage domain experts through an intuitive chat interface.
+The Tech Explorer UI is a specialized Next.js application designed to provide intelligent mortgage guidance and loan processing assistance. Built on LangGraph infrastructure, it enables seamless conversations with mortgage domain experts through an intuitive chat interface.
 
 ## 🏠 Features
 
@@ -16,8 +16,8 @@ The Mortgage Assistant UI is a specialized Next.js application designed to provi
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-org/mortgage-assistant-ui.git
-cd mortgage-assistant-ui
+git clone https://github.com/your-org/tech-explorer-ui.git
+cd tech-explorer-ui
 ```
 
 Install dependencies:
@@ -32,19 +32,19 @@ Run the development server:
 pnpm dev
 ```
 
-The Mortgage Assistant will be available at `http://localhost:3000`.
+The Tech Explorer will be available at `http://localhost:3000`.
 
 ## 📋 Usage
 
 ### Development Setup
 
-The Mortgage Assistant connects to a LangGraph server running your mortgage domain logic. You'll need:
+The Tech Explorer connects to a LangGraph server running your mortgage domain logic. You'll need:
 
-- **LangGraph Server**: Your mortgage assistant backend (typically running at `http://localhost:2024`)
-- **Assistant ID**: The mortgage assistant graph identifier (e.g., "mortgage-agent")
+- **LangGraph Server**: Your Tech Explorer backend (typically running at `http://localhost:2024`)
+- **Assistant ID**: The Tech Explorer graph identifier (e.g., "mortgage-agent")
 - **API Configuration**: Authentication settings for production deployments
 
-### Mortgage Assistant Capabilities
+### Tech Explorer Capabilities
 
 Once connected, you can:
 
@@ -57,12 +57,12 @@ Once connected, you can:
 
 ## ⚙️ Environment Variables
 
-Configure the Mortgage Assistant by setting these environment variables:
+Configure the Tech Explorer by setting these environment variables:
 
 ### Development Configuration
 
 ```bash
-# Mortgage Assistant API Configuration
+# Tech Explorer API Configuration
 NEXT_PUBLIC_API_URL=http://localhost:2024
 NEXT_PUBLIC_ASSISTANT_ID=mortgage-agent
 
@@ -104,18 +104,18 @@ To configure:
 
 ## 🐳 Container Deployment
 
-The Mortgage Assistant is fully containerized and ready for enterprise deployment on OpenShift and Kubernetes.
+The Tech Explorer is fully containerized and ready for enterprise deployment on OpenShift and Kubernetes.
 
 ### Quick Container Start
 
 ```bash
 # Pull from public registry
-podman pull quay.io/rbrhssa/mortgage-agent-ui:latest
+podman pull quay.io/rbrhssa/tech-explorer-ui:latest
 
 # Run with local LangGraph server
 podman run -p 8080:8080 \
   -e LANGGRAPH_API_URL=http://host.containers.internal:2024 \
-  quay.io/rbrhssa/mortgage-agent-ui:latest
+  quay.io/rbrhssa/tech-explorer-ui:latest
 ```
 
 ### OpenShift Deployment
@@ -128,7 +128,7 @@ oc apply -f k8s/
 oc apply -k k8s/
 
 # Check deployment status
-oc get pods -l app=mortgage-assistant-ui
+oc get pods -l app=tech-explorer-ui
 ```
 
 ### Build Your Own Image
@@ -150,7 +150,7 @@ For complete deployment instructions, see:
 
 ## 🎛️ Customizing Chat Behavior
 
-You can control the visibility and behavior of messages within the Mortgage Assistant UI:
+You can control the visibility and behavior of messages within the Tech Explorer UI:
 
 **1. Prevent Live Streaming:**
 
@@ -223,7 +223,7 @@ This approach guarantees the message remains completely hidden from the user int
 
 ## 📊 Rendering Mortgage Artifacts
 
-The Mortgage Assistant UI supports rendering financial artifacts like loan summaries, payment schedules, and document analysis results in a dedicated side panel. Common mortgage artifacts include:
+The Tech Explorer UI supports rendering financial artifacts like loan summaries, payment schedules, and document analysis results in a dedicated side panel. Common mortgage artifacts include:
 
 - **Loan Estimates**: Official loan estimate forms with terms and costs
 - **Payment Schedules**: Amortization tables and payment breakdowns  
@@ -367,7 +367,7 @@ export function DocumentAnalysis(props: {
 
 ## 🏢 Production Deployment
 
-The Mortgage Assistant UI is designed for enterprise deployment with secure authentication and scalable architecture. Production deployments require proper authentication to protect sensitive financial data and comply with regulatory requirements.
+The Tech Explorer UI is designed for enterprise deployment with secure authentication and scalable architecture. Production deployments require proper authentication to protect sensitive financial data and comply with regulatory requirements.
 
 ### Enterprise Security Considerations
 
@@ -390,7 +390,7 @@ The API Passthrough method is ideal for mortgage applications as it centralizes 
 **Mortgage-Specific Configuration:**
 
 ```bash
-# Mortgage Assistant Configuration
+# Tech Explorer Configuration
 NEXT_PUBLIC_ASSISTANT_ID="mortgage-agent"
 
 # Production Mortgage LangGraph Server
@@ -492,7 +492,7 @@ const mortgageConfig = {
 ## 📁 File Structure
 
 ```
-mortgage-assistant-ui/
+tech-explorer-ui/
 ├── src/
 │   ├── app/
 │   │   ├── api/
@@ -542,4 +542,4 @@ For mortgage-specific questions and enterprise deployment support:
 - **Documentation**: [Container Deployment Guide](CONTAINER_DEPLOYMENT.md)
 - **Health Check**: `http://localhost:8080/api/health`
 - **Container Logs**: `podman logs <container-name>`
-- **OpenShift Support**: `oc get pods -l app=mortgage-assistant-ui`
+- **OpenShift Support**: `oc get pods -l app=tech-explorer-ui`

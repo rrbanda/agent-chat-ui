@@ -1,0 +1,408 @@
+# Citi Tech Explorer Configuration
+# All content, questions, options, and recommendations are defined here
+
+# Theme Configuration
+theme:
+  brandName: "Citi Tech Explorer"
+  primaryColor: "#0066CC" # Citi Blue
+  accentColor: "#003D82" # Citi Dark Blue
+  tagline: "Technology at your fingertips"
+  subtitle: "As Citi's offerings grow, so do the resources available to you. In this Citi Tech Explorer determine what technologies are best to meet your needs today."
+  callToAction: "Simple. Quick. Fast."
+
+# Landing Page Configuration
+landing:
+  title: "Citi Tech Explorer"
+  description: "Technology at your fingertips."
+  longDescription: "As Citi's offerings grow, so do the resources available to you. In this Citi Tech Explorer determine what technologies are best to meet your needs today."
+  tagline: "Simple. Quick. Fast."
+  ctaButton: "Get started now"
+
+# Progress Steps (shown in sidebar)
+progressSteps:
+  - id: "intro"
+    label: "Intro"
+  - id: "question1"
+    label: "Question I"
+  - id: "question2"
+    label: "Question II"
+  - id: "question3"
+    label: "Question III"
+  - id: "results"
+    label: "Results"
+
+# Questions Configuration
+questions:
+  - id: "q1"
+    type: "sector"
+    title: "What sector are you in?"
+    stepId: "question1"
+    options:
+      - id: "cti"
+        label: "CTI"
+        fullName: "Consumer Technology & Innovation"
+      - id: "icg"
+        label: "ICG"
+        fullName: "Institutional Clients Group"
+      - id: "pbwm"
+        label: "PBWM"
+        fullName: "Personal Banking & Wealth Management"
+      - id: "gfts"
+        label: "GFTS"
+        fullName: "Global Functions Technology & Services"
+
+  - id: "q2"
+    type: "location"
+    title: "Where are you based?"
+    subtitle: "(Click on the map)"
+    stepId: "question2"
+    regions:
+      - id: "north_america"
+        label: "North America"
+        countries: ["USA", "Canada", "Mexico"]
+      - id: "south_america"
+        label: "South America"
+        countries: ["Brazil", "Argentina", "Chile"]
+      - id: "europe"
+        label: "Europe"
+        countries: ["UK", "Germany", "France", "Poland"]
+      - id: "asia_pacific"
+        label: "Asia Pacific"
+        countries: ["India", "Singapore", "Hong Kong", "Japan", "Australia"]
+      - id: "china"
+        label: "China"
+        countries: ["China"]
+      - id: "middle_east_africa"
+        label: "Middle East & Africa"
+        countries: ["UAE", "Saudi Arabia", "South Africa"]
+
+  - id: "q3"
+    type: "role"
+    title: "What is your role?"
+    stepId: "question3"
+    options:
+      - id: "developer"
+        label: "Developer"
+        description: "Building and coding applications"
+      - id: "engineer"
+        label: "Engineer"
+        description: "Testing and infrastructure"
+      - id: "architect"
+        label: "Architect"
+        description: "Designing systems and patterns"
+
+# Persona-based Cards Configuration
+# Cards shown after Q3 based on role selection
+personaCards:
+  developer:
+    - id: "local_dev"
+      title: "Local Development"
+      description: "Set up and run development environments locally"
+      icon: "laptop"
+      relatedTech: ["openshift_local", "innovation_lab", "podman"]
+      prompt: "I'm looking for local development tools at Citi. What options do I have for setting up and running development environments on my machine?"
+      
+    - id: "cloud_deploy"
+      title: "Cloud Deployment"
+      description: "Deploy applications to cloud platforms"
+      icon: "cloud"
+      relatedTech: ["andromeda", "ecs", "dedicated"]
+      prompt: "I need to deploy my application to the cloud. What are the available Citi platforms for cloud deployment and which one should I use?"
+      
+    - id: "browser_ide"
+      title: "Browser-based IDE"
+      description: "Develop directly in your browser"
+      icon: "code"
+      relatedTech: ["dev_spaces"]
+      prompt: "I want to develop directly in my browser without installing anything locally. What browser-based IDE options does Citi offer?"
+      
+    - id: "service_mesh"
+      title: "Microservices Management"
+      description: "Connect, manage, and observe microservices"
+      icon: "network"
+      relatedTech: ["service_mesh"]
+      prompt: "I'm working with microservices and need to manage their communication, observability, and security. What service mesh solutions are available at Citi?"
+      
+    - id: "architecture_patterns"
+      title: "Architecture Patterns"
+      description: "Best practices and blueprints"
+      icon: "blueprint"
+      relatedTech: ["helix"]
+      prompt: "I'm looking for architecture patterns and best practices for building cloud-native applications. Where can I find Citi's recommended blueprints and patterns?"
+      
+    - id: "container_management"
+      title: "Container Management"
+      description: "Build and manage containerized applications"
+      icon: "container"
+      relatedTech: ["podman", "openshift_local"]
+      prompt: "I need help with containerizing my application. What tools does Citi provide for building and managing containers?"
+      
+    - id: "migration"
+      title: "Application Migration"
+      description: "Migrate from PCF to Kubernetes"
+      icon: "transfer"
+      relatedTech: ["openshift_local", "ecs"]
+      prompt: "I need to migrate an application from PCF (Pivotal Cloud Foundry) to Kubernetes. What's the recommended approach and what tools can help with this migration?"
+      
+    - id: "ai_assistant"
+      title: "Not sure? Ask our AI"
+      description: "Chat with our assistant to find the right solution"
+      icon: "bot"
+      relatedTech: []
+      prompt: "I'm not sure which technology is right for my needs. Can you help me understand what Citi technologies are available and recommend the best fit for my use case?"
+
+  engineer:
+    - id: "testing_env"
+      title: "Testing Environment"
+      description: "Safe space to test patches and technologies"
+      icon: "test"
+      relatedTech: ["innovation_lab"]
+      prompt: "I need a safe testing environment where I can test new patches and technologies without affecting production. What options does Citi provide for this?"
+      
+    - id: "local_containerization"
+      title: "Local Containerization"
+      description: "Containerize applications locally"
+      icon: "container"
+      relatedTech: ["openshift_local", "podman"]
+      prompt: "I need to containerize an application in a local environment. What are the best tools and practices for local containerization at Citi?"
+      
+    - id: "patch_testing"
+      title: "Patch Testing"
+      description: "Test and validate new patches"
+      icon: "patch"
+      relatedTech: ["innovation_lab", "ecs"]
+      prompt: "I need to test and validate new patches before deploying them. What environments and tools are available at Citi for patch testing?"
+      
+    - id: "ai_assistant"
+      title: "Not sure? Ask our AI"
+      description: "Chat with our assistant to find the right solution"
+      icon: "bot"
+      relatedTech: []
+      prompt: "I'm not sure which technology is right for my needs. Can you help me understand what Citi technologies are available and recommend the best fit for my use case?"
+
+  architect:
+    - id: "blueprints"
+      title: "Architecture Blueprints"
+      description: "Opinionated patterns and best practices"
+      icon: "blueprint"
+      relatedTech: ["helix"]
+      prompt: "I'm designing a new system and need architecture blueprints with opinionated patterns and best practices. What resources does Citi provide for architects?"
+      
+    - id: "platform_selection"
+      title: "Platform Selection"
+      description: "Compare and choose the right platform"
+      icon: "compare"
+      relatedTech: ["andromeda", "ecs", "dedicated", "mercury"]
+      prompt: "I need to select the right platform for our application. Can you help me compare Citi's available platforms and recommend which one fits our requirements?"
+      
+    - id: "template_design"
+      title: "Template Design"
+      description: "Design and customize templates for developers"
+      icon: "template"
+      relatedTech: ["helix", "dev_spaces"]
+      prompt: "I want to design and customize development templates that my team can use. What tools does Citi offer for creating reusable templates?"
+      
+    - id: "twelve_factor"
+      title: "12-Factor Apps"
+      description: "Build cloud-native applications"
+      icon: "cloud-native"
+      relatedTech: ["andromeda", "ecs", "dedicated"]
+      prompt: "I'm architecting a 12-factor cloud-native application. What Citi platforms best support 12-factor app principles and what are the best practices?"
+      
+    - id: "ai_assistant"
+      title: "Not sure? Ask our AI"
+      description: "Chat with our assistant to find the right solution"
+      icon: "bot"
+      relatedTech: []
+      prompt: "I'm not sure which technology is right for my needs. Can you help me understand what Citi technologies are available and recommend the best fit for my use case?"
+
+# Technology/Service Offerings Database
+technologies:
+  dev_spaces:
+    id: "dev_spaces"
+    name: "Red Hat OpenShift Dev Spaces"
+    shortName: "Dev Spaces"
+    category: "Developer Lab"
+    description: "Red Hat OpenShift Dev Spaces (formerly: Red Hat CodeReady Workspaces) is a developer tool that makes cloud-native development practical for teams. Using Kubernetes and containers to provide any member of the development or IT team with a consistent, preconfigured development environment allows teams to get what they need quickly and easily."
+    keyBenefits:
+      - "OpenShift-native development"
+      - "In-browser IDE"
+      - "Consistent one-click developer workspaces"
+      - "Enterprise integration"
+      - "Near instant onboarding"
+      - "Broad set of certified stacks"
+    dependency: "??"
+    cost: "??"
+    learnMoreUrl: "#"
+    requestAccessUrl: "#"
+    
+  service_mesh:
+    id: "service_mesh"
+    name: "Red Hat OpenShift Service Mesh"
+    shortName: "Service Mesh"
+    category: "Capabilities"
+    description: "Red Hat OpenShift Service Mesh (RHOSSM) is based on the open source project Maistra, a fork of another open source project Istio, that provides a uniform way to connect, manage, and observe microservices-based applications. It provides behavioral insight into and control of the networked microservices in your service mesh"
+    keyBenefits:
+      - "Out-of-the-box security for your distributed applications"
+      - "Ability to control the flow of traffic and API calls between your services with effective traffic management, which makes your applications more resilient"
+      - "Improve service reliability with automatic request retries, timeouts, and circuit breakers"
+      - "Clear and intuitive end-to-end view of your services"
+      - "Provides distributed tracing out of the box to troubleshoot and isolate bottlenecks in end-to-end request paths"
+    dependency: "??"
+    cost: "??"
+    learnMoreUrl: "#"
+    requestAccessUrl: "#"
+    
+  openshift_local:
+    id: "openshift_local"
+    name: "OpenShift Local"
+    shortName: "OpenShift Local"
+    category: "Developer Lab"
+    formerlyKnown: "Red Hat CodeReady Containers"
+    description: "OpenShift Local (formerly: Red Hat CodeReady Containers) allows developers to quickly and easily access a small OpenShift cluster for app development via a centrally managed virtual machine. With the flexibility of choice in programming language you are able to get up and running quickly."
+    keyBenefits:
+      - "Automatically installs and enables the xpaas templates, anyuid access controls, and admin-user add-ons"
+      - "Includes a local version of the OpenShift Container Platform (EEOCP)"
+      - "A single-node cluster with a number of templates and includes a local Docker registry and its API"
+      - "Improved startup process and integrated service mesh, serverless, and connects to VS Code with the OpenShift Connector"
+    dependency: "??"
+    cost: "??"
+    learnMoreUrl: "#"
+    requestAccessUrl: "#"
+    
+  helix:
+    id: "helix"
+    name: "Helix blueprints"
+    shortName: "Helix"
+    category: "Developer Lab"
+    description: "Helix blueprints consist of opinionated architecture patterns, provide guidance on engineering best practices, anti-patterns to watch out for, architectural trade-offs to make and more. These come with deployable assets in companion repositories that can be used to gain acceleration when building production grade applications. A Helix blueprint repository includes a reference app to demonstrate techniques on how you would approach building a production grade app stack."
+    keyBenefits:
+      - "Well-established architectural patterns to use and best practices to employ for developing cloud native applications"
+    dependency: "Must be member of ICG sector."
+    cost: "??"
+    learnMoreUrl: "#"
+    requestAccessUrl: "#"
+    
+  innovation_lab:
+    id: "innovation_lab"
+    name: "Innovation Lab"
+    shortName: "Innovation Lab"
+    category: "Developer Lab"
+    description: "Innovation Lab is a developer tool that makes cloud-native development practical for teams. Using Kubernetes and containers to provide any member of the development or IT team with a consistent, preconfigured development environment allows teams to get what they need quickly and easily."
+    keyBenefits:
+      - "Low barrier to entry to get access"
+      - "Low risk test and innovation"
+      - "Ability to experiment: build, delete it, and space goes back to others"
+      - "20 minutes to get up and running"
+      - "Test and push to the break point to discover where those are and how to deal/avoid them"
+      - "Test and patch versions"
+      - "Explore new technologies quickly and safely"
+    dependency: "??"
+    cost: "??"
+    learnMoreUrl: "#"
+    requestAccessUrl: "#"
+    
+  mercury:
+    id: "mercury"
+    name: "Cloud@Citi: Mercury"
+    shortName: "Mercury"
+    category: "Service Offerings"
+    description: "Citi's limited OpenShift implementation for tech rooms consisting of a cluster running on bare-metal infrastructure. Application team is responsible for: infrastructure requirements, support engagement, and cross-border concerns. Clusters range from 3 to 10 application nodes."
+    keyBenefits:
+      - "Less restrictive admission controls"
+      - "More accommodating to edge cases pertaining to resource consumption"
+      - "Available in non-strategic data centers (i.e. tech rooms)"
+    dependency: ""
+    cost: "Cluster and tech room support staff purchased by application."
+    learnMoreUrl: "#"
+    requestAccessUrl: "#"
+    
+  ecs:
+    id: "ecs"
+    name: "ECS"
+    shortName: "ECS"
+    category: "Service Offerings"
+    description: "Citi's current sector-dedicated OpenShift Platform. Consists of sector-specific clusters on VMware. A Kubernetes distribution focused on developer experience and application security that's platform agnostic. ECS helps you develop and deploy applications to one or more hosts that can be public-facing web applications or backend applications, including microservices or databases. Applications can be implemented in any programming language you choose. The only requirement is that the application can run within a container."
+    keyBenefits:
+      - "One click or entry at the command line, the Operator will manage it from there"
+      - "Simple to set up a CI/CD pipeline"
+      - "'odo', the command-line interface for developers"
+      - "consistent application platform to manage hybrid cloud, multicloud, and edge deployments"
+      - "Self-service provisioning for development"
+    dependency: ""
+    cost: "Clusters purchased by sectors/costs divided internally."
+    learnMoreUrl: "#"
+    requestAccessUrl: "#"
+    
+  dedicated:
+    id: "dedicated"
+    name: "Cloud@Citi: Dedicated"
+    shortName: "Dedicated"
+    category: "Service Offerings"
+    description: "Citi's next generation single-sector OpenShift platform. Consists of sector-dedicated clusters running on bare-metal infrastructure and programmatically enforces a less-restrictive set of admission requirements. Cluster size is 15 application nodes."
+    keyBenefits:
+      - "Less restrictive admission controls"
+      - "More accommodating to edge cases pertaining to resource consumption"
+    dependency: ""
+    cost: "Clusters purchased by sectors/costs divided internally."
+    learnMoreUrl: "#"
+    requestAccessUrl: "#"
+    
+  andromeda:
+    id: "andromeda"
+    name: "Cloud@Citi: Andromeda"
+    shortName: "Andromeda"
+    category: "Service Offerings"
+    description: "Citi's multi-sector OpenShift offering for cloud-native applications. Consists of superclusters running on bare-metal infrastructure and programmatically enforces admission requirements. Infrastructure will be shared between all sectors. Time-series metering at a CSI level will enable apps to be charged based on utilization. Clusters range from 15 to 180 application nodes."
+    keyBenefits:
+      - "Seamless onboarding (capacity procured/managed/owned by CTI)"
+      - "On-demand bursting"
+    dependency: ""
+    cost: "Charged based on utilization, not for entire cluster. Apps will pay a standard rate for reserved capacity and premium rate for any capacity utilized outside of that reserved (burst utilization)."
+    learnMoreUrl: "#"
+    requestAccessUrl: "#"
+    videoUrl: "https://example.com/andromeda-intro"
+    
+  podman:
+    id: "podman"
+    name: "Podman"
+    shortName: "Podman"
+    category: "Capabilities"
+    description: "Podman is an open-source, daemonless container engine for developing, managing, and running OCI Containers on Linux, Windows, and Mac. It can be run as a root or non-root user."
+    keyBenefits:
+      - "Daemonless architecture for better security"
+      - "Rootless containers"
+      - "Docker-compatible CLI"
+      - "Pod support"
+    dependency: ""
+    cost: "Free and open-source"
+    learnMoreUrl: "#"
+    requestAccessUrl: "#"
+
+# AI Agent Configuration
+aiAgent:
+  greeting:
+    developer: "Hi! I see you're a Developer{sector}{location}. I can help you find the right technology for your needs. What are you trying to accomplish?"
+    engineer: "Hi! I see you're an Engineer{sector}{location}. I can help you find the right tools for testing and infrastructure. What do you need help with?"
+    architect: "Hi! I see you're an Architect{sector}{location}. I can help you with platform selection, patterns, and design decisions. What would you like to explore?"
+  
+  systemPrompt: |
+    You are a helpful Citi Technology assistant helping employees find the right technology solutions.
+    
+    User Context:
+    - Sector: {sector}
+    - Location: {location}
+    - Role: {role}
+    - Selected Card: {cardContext}
+    
+    Your goal is to:
+    1. Understand the user's specific use case and requirements
+    2. Ask clarifying questions about timeline, experience level, constraints
+    3. Recommend the most appropriate technology from the available options
+    4. Explain trade-offs and alternatives
+    5. Provide next steps (Learn more, Request access)
+    
+    Available Technologies: {availableTech}
+    
+    Be conversational, professional, and focus on finding the best solution for their needs.
+

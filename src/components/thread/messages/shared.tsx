@@ -24,17 +24,27 @@ function ContentCopyable({
 
   const handleCopy = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
+    e.preventDefault();
+    
+    console.log('Copy clicked, content length:', content?.length);
+    
+    if (!content) {
+      console.warn('No content to copy');
+      return;
+    }
     
     try {
       // Modern clipboard API (preferred)
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(content);
+        console.log('✓ Copied to clipboard successfully (modern API)');
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
         return;
       }
       
       // Fallback for older browsers or non-HTTPS
+      console.log('Using fallback copy method');
       const textArea = document.createElement('textarea');
       textArea.value = content;
       textArea.style.position = 'fixed';
@@ -44,18 +54,24 @@ function ContentCopyable({
       textArea.focus();
       textArea.select();
       
-      const success = document.execCommand('copy');
-      document.body.removeChild(textArea);
-      
-      if (success) {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      } else {
-        console.warn('Copy to clipboard failed');
+      try {
+        const success = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        if (success) {
+          console.log('✓ Copied to clipboard successfully (fallback method)');
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        } else {
+          console.error('✗ Copy to clipboard failed (document.execCommand returned false)');
+        }
+      } catch (err) {
+        document.body.removeChild(textArea);
+        throw err;
       }
     } catch (error) {
-      console.warn('Copy to clipboard failed:', error);
-      // Could add toast notification here for user feedback
+      console.error('✗ Copy to clipboard failed:', error);
+      alert('Failed to copy to clipboard. Please try selecting and copying manually.');
     }
   };
 
@@ -78,7 +94,7 @@ function ContentCopyable({
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.15 }}
           >
-            <CopyCheck className="text-green-500" />
+            <CopyCheck className="text-[#0066CC]" />
           </motion.div>
         ) : (
           <motion.div
@@ -88,7 +104,7 @@ function ContentCopyable({
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.15 }}
           >
-            <Copy />
+            <Copy className="text-[#0066CC] hover:text-[#003D82]" />
           </motion.div>
         )}
       </AnimatePresence>
